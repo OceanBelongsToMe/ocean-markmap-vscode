@@ -249,7 +249,21 @@ class MarkmapEditor implements CustomTextEditorProvider {
       },
       openFile(relPath: string) {
         const filePath = Utils.joinPath(Utils.dirname(document.uri), relPath);
-        commands.executeCommand('vscode.open', filePath);
+        const isOpen = vscodeWindow.visibleTextEditors.some(
+          editor => editor.document.uri.fsPath === filePath.fsPath
+        );
+        if (isOpen) {
+          // 如果文件已经打开，则聚焦到该文件
+          const existingEditor = vscodeWindow.visibleTextEditors.find(
+            editor => editor.document.uri.fsPath === filePath.fsPath
+          );
+          if (existingEditor) {
+            vscodeWindow.showTextDocument(existingEditor.document, existingEditor.viewColumn);
+          }
+        } else {
+          // 如果文件没有打开，则在新面板中打开文件
+          commands.executeCommand('vscode.open', filePath, { viewColumn: ViewColumn.Beside });
+        }
       },
     };
     const logger = vscodeWindow.createOutputChannel('Markmap');
