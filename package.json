@@ -1,14 +1,14 @@
 {
-  "name": "markmap-vscode",
+  "name": "ocean-markmap-vscode",
   "version": "0.1.4",
   "description": "Visualize your markdown in VSCode",
-  "author": "Gerald <gera2ld@live.com>",
+  "author": "wy <wangyang@163.com>",
   "license": "MIT",
   "displayName": "Markmap",
-  "publisher": "gera2ld",
+  "publisher": "ocean",
   "icon": "assets/favicon.png",
   "engines": {
-    "vscode": "^1.75.0"
+    "vscode": "^1.92.0"
   },
   "categories": [
     "Visualization"
@@ -98,19 +98,25 @@
   ],
   "devDependencies": {
     "@babel/runtime": "^7.22.6",
-    "@gera2ld/plaid": "~2.7.0",
-    "@gera2ld/plaid-rollup": "~2.7.0",
+    "@gera2ld/plaid": "^2.7.0",
+    "@gera2ld/plaid-rollup": "^2.7.0",
     "@types/lodash.debounce": "^4.0.7",
-    "@types/node": "^20.4.2",
-    "@types/vscode": "~1.75.0",
+    "@types/node": "^22.5.2",
+    "@types/vscode": "^1.92.0",
     "del-cli": "^5.1.0",
-    "husky": "^8.0.3",
+    "husky": "^9.1.5",
     "lodash.debounce": "^4.0.8",
     "markmap-common": "^0.17.0",
     "markmap-lib": "^0.17.0",
     "markmap-render": "^0.17.0",
     "markmap-toolbar": "^0.17.0",
     "read-pkg-up": "^10.0.0",
-    "vscode-uri": "^3.0.7"
+    "vscode-uri": "^3.0.7",
+    "@types/markdown-it": "^14.1.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "markmap-html-parser": "link:../../github/markmap/packages/markmap-html-parser"
+    }
   }
 }
