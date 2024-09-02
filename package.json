@@ -1,6 +1,6 @@
 {
   "name": "ocean-markmap-vscode",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Visualize your markdown in VSCode",
   "author": "wy <wangyang@163.com>",
   "license": "MIT",
@@ -100,23 +100,29 @@
     "@babel/runtime": "^7.22.6",
     "@gera2ld/plaid": "^2.7.0",
     "@gera2ld/plaid-rollup": "^2.7.0",
+    "@rollup/plugin-alias": "^5.1.0",
     "@types/lodash.debounce": "^4.0.7",
+    "@types/markdown-it": "^14.1.2",
+    "@types/markdown-it-plantuml": "^1.4.5",
     "@types/node": "^22.5.2",
     "@types/vscode": "^1.92.0",
     "del-cli": "^5.1.0",
     "husky": "^9.1.5",
     "lodash.debounce": "^4.0.8",
     "markmap-common": "^0.17.0",
-    "markmap-lib": "^0.17.0",
     "markmap-render": "^0.17.0",
     "markmap-toolbar": "^0.17.0",
-    "read-pkg-up": "^10.0.0",
-    "vscode-uri": "^3.0.7",
-    "@types/markdown-it": "^14.1.2"
+    "read-package-up": "^11.0.0",
+    "vscode-uri": "^3.0.7"
   },
   "pnpm": {
     "overrides": {
-      "markmap-html-parser": "link:../../github/markmap/packages/markmap-html-parser"
+      "markmap-html-parser": "$markmap-html-parser"
     }
+  },
+  "dependencies": {
+    "markdown-it-plantuml": "^1.4.1",
+    "markmap-html-parser": "link:../../github/markmap/packages/markmap-html-parser",
+    "markmap-lib": "^0.17.0"
   }
 }

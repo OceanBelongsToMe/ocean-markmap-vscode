@@ -82,11 +82,11 @@ function clickHandler(type) {
 
 function findActiveNode(line) {
   function dfs(node) {
-    const lines = node.p?.lines;
+    const lines = node.payload?.lines.split(',');
     if (lines && lines[0] <= line && line < lines[1]) {
       best = node;
     }
-    node.c?.forEach(dfs);
+    node.children?.forEach(dfs);
   }
   let best;
   dfs(root);

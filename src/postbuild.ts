@@ -6,11 +6,12 @@ import { ReadableStream } from 'stream/web';
 import { finished } from 'stream/promises';
 import { Transformer } from 'markmap-lib';
 import { ASSETS_PREFIX, getAssets, localProvider } from './util';
+import { customPlugins } from './plugins';
 
 const providerName = 'local-hook';
 
 async function fetchAssets() {
-  const transformer = new Transformer();
+  const transformer = new Transformer(customPlugins);
   const { provider } = transformer.urlBuilder;
   transformer.urlBuilder.setProvider(providerName, localProvider);
   transformer.urlBuilder.provider = providerName;

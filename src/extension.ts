@@ -23,6 +23,7 @@ import {
   transformerExport,
   transformerLocal,
 } from './util';
+import { customizeOptions } from './parser';
 
 const PREFIX = 'markmap-vscode';
 const VIEW_TYPE = `${PREFIX}.markmap`;
@@ -131,7 +132,7 @@ class MarkmapEditor implements CustomTextEditorProvider {
     };
     const update = () => {
       const md = document.getText();
-      const { root, frontmatter } = transformerLocal.transform(md);
+      const { root, frontmatter } = transformerLocal.transform(md, customizeOptions);
       webviewPanel.webview.postMessage({
         type: 'setData',
         data: {
@@ -167,7 +168,7 @@ class MarkmapEditor implements CustomTextEditorProvider {
         });
         if (!targetUri) return;
         const md = document.getText();
-        const { root, features, frontmatter } = transformerExport.transform(md);
+        const { root, features, frontmatter } = transformerExport.transform(md, customizeOptions);
         const jsonOptions = {
           ...defaultOptions,
           ...(frontmatter as any)?.markmap,
