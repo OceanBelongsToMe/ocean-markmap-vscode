@@ -37,12 +37,15 @@ window.addEventListener('message', e => {
 document.addEventListener('click', e => {
   const el = e.target?.closest('a');
   if (el) {
-    const href = el.getAttribute('href');
+    let href = el.getAttribute('href');
     if (!href.includes('://')) {
-      vscode.postMessage({
-        type: 'openFile',
-        data: href,
-      });
+      href = href.split('#')[0];
+      if (href) {
+        vscode.postMessage({
+          type: 'openFile',
+          data: href,
+        });
+      }
     }
   }
 });
