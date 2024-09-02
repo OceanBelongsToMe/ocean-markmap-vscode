@@ -83,6 +83,7 @@
     }
   },
   "scripts": {
+    "package": "pnpm vsce package --no-dependencies",
     "prepare": "husky install",
     "vscode:prepublish": "run-s build",
     "clean": "del-cli dist",
@@ -113,7 +114,8 @@
     "markmap-render": "^0.17.0",
     "markmap-toolbar": "^0.17.0",
     "read-package-up": "^11.0.0",
-    "vscode-uri": "^3.0.7"
+    "vsce": "^2.15.0",
+    "vscode-uri": "^3.0.8"
   },
   "pnpm": {
     "overrides": {
