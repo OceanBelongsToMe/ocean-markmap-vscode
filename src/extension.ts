@@ -103,6 +103,9 @@ class MarkmapEditor implements CustomTextEditorProvider {
     };
     let defaultOptions: IMarkmapJSONOptions;
     let customCSS: string;
+    const jumpViewId = workspace
+      .getConfiguration('markmap')
+      .get<string>('jumpViewId');
     const updateOptions = () => {
       const raw = workspace
         .getConfiguration('markmap')
@@ -249,6 +252,14 @@ class MarkmapEditor implements CustomTextEditorProvider {
       },
       openFile(relPath: string) {
         const filePath = Utils.joinPath(Utils.dirname(document.uri), relPath);
+        if (jumpViewId) {
+          commands.executeCommand(
+            'vscode.openWith',
+            filePath,
+            jumpViewId
+          );
+          return;
+        }
         const isOpen = vscodeWindow.visibleTextEditors.some(
           editor => editor.document.uri.fsPath === filePath.fsPath
         );

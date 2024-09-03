@@ -78,6 +78,12 @@
           "default": "",
           "markdownDescription": "Custom CSS for Markmap, please don't change this if you are not sure what you are doing. You can test your styles on <https://markmap.js.org> since the SVGs shares the same structure.",
           "editPresentation": "multilineText"
+        },
+        "markmap.jumpViewId": {
+          "type": "string",
+          "default": "markmap-vscode.markmap",
+          "markdownDescription": "jumpView",
+          "editPresentation": "singlelineText"
         }
       }
     }
