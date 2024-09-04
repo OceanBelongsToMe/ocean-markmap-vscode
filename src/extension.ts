@@ -291,7 +291,9 @@ class MarkmapEditor implements CustomTextEditorProvider {
         // commands.executeCommand('revealLine', { at: 'center',});
         const lineNumbers = lines.split(',').map(Number);
         // 创建一个新的 Range 对象，并跳转到该行
-        const range = new Range(lineNumbers[0], 0, lineNumbers[1], 0);
+        const line = document.lineAt(lineNumbers[0]);
+        let range = line.range;
+        range = new Range(range.end, range.end);
         isOpen.revealRange(range, TextEditorRevealType.AtTop);
         // 将光标移动到指定行
         isOpen.selection = new Selection(range.start, range.end);
