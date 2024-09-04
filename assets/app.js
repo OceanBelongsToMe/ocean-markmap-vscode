@@ -45,6 +45,7 @@ document.addEventListener('click', e => {
           type: 'openFile',
           data: href,
         });
+	return;
       }
     }
   }
