@@ -6,6 +6,7 @@ import type { StateCore } from "markdown-it/index.js";
 
 const eleTokenTag = "node-container";
 const customRuleName = 'customMdIt';
+const eleOpen = new Token(eleTokenTag, eleTokenTag, 1);
 const eleClose = new Token(eleTokenTag, eleTokenTag, -1);
 
 function customRuler(state: StateCore) {
@@ -13,9 +14,8 @@ function customRuler(state: StateCore) {
 
     for (let i = 0; i < state.tokens.length; i += 1) {
         const token = state.tokens[i];
-        const eleOpen = new Token(eleTokenTag, eleTokenTag, 1);
         if (token.map) {
-            eleOpen.attrPush(["data-lines", token.map.join(',')]);
+            eleOpen.attrSet("data-lines", token.map.join(','));
         }
         if (i >= 1 && token.type === 'inline' && token.content) {
             const prev = state.tokens[i - 1];
@@ -35,6 +35,7 @@ function customRuler(state: StateCore) {
     }
     return true;
 }
+
 const customMdItPlugin: MarkdownIt.PluginSimple = (md: MarkdownIt) => {
     md.use(plantuml, { openMarker: '```plantuml', closeMarker: '```' });
     const renderer = new Renderer();
@@ -45,10 +46,9 @@ const customMdItPlugin: MarkdownIt.PluginSimple = (md: MarkdownIt) => {
     ['fence', 'image', 'blockquote', customRuleName, 'uml_diagram'].forEach((key) => {
         const defaultRenderer = md.renderer.rules[key] || proxy;
         md.renderer.rules[key] = function (tokens, idx, options, env, self) {
-            const eleOpen = new Token(eleTokenTag, eleTokenTag, 1);
             const token = tokens[idx];
             if (token.map) {
-                eleOpen.attrPush(["data-lines", token.map.join(',')]);
+                eleOpen.attrSet("data-lines", token.map.join(','));
             }
             const result = defaultRenderer(tokens, idx, options, env, self);
             return `${renderer.renderToken([eleOpen], 0, options)}${result}${renderer.renderToken([eleClose], 0, options)}`;

@@ -35,7 +35,7 @@ window.addEventListener('message', e => {
   handler?.(data);
 });
 document.addEventListener('click', e => {
-  const el = e.target?.closest('a');
+  let el = e.target?.closest('a');
   if (el) {
     let href = el.getAttribute('href');
     if (!href.includes('://')) {
@@ -47,6 +47,15 @@ document.addEventListener('click', e => {
         });
       }
     }
+  }
+  el = e.target?.closest('node-container');
+
+  if (el) {
+    let lines = el.getAttribute('data-lines');
+    vscode.postMessage({
+      type: 'location',
+      data: lines,
+    });
   }
 });
 vscode.postMessage({ type: 'refresh' });

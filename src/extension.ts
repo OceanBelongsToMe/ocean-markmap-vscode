@@ -14,6 +14,8 @@ import {
   commands,
   window as vscodeWindow,
   workspace,
+  Range, Selection,
+  TextEditorRevealType,
 } from 'vscode';
 import { Utils } from 'vscode-uri';
 import {
@@ -150,7 +152,32 @@ class MarkmapEditor implements CustomTextEditorProvider {
     };
     const debouncedUpdateCursor = debounce(updateCursor, 300);
     const debouncedUpdate = debounce(update, 300);
-
+    const openFile = (relPath: string) => {
+      const filePath = Utils.joinPath(Utils.dirname(document.uri), relPath);
+      if (jumpViewId) {
+        commands.executeCommand(
+          'vscode.openWith',
+          filePath,
+          jumpViewId
+        );
+        return;
+      }
+      const isOpen = vscodeWindow.visibleTextEditors.some(
+        editor => editor.document.uri.fsPath === filePath.fsPath
+      );
+      if (isOpen) {
+        // 如果文件已经打开，则聚焦到该文件
+        const existingEditor = vscodeWindow.visibleTextEditors.find(
+          editor => editor.document.uri.fsPath === filePath.fsPath
+        );
+        if (existingEditor) {
+          vscodeWindow.showTextDocument(existingEditor.document, existingEditor.viewColumn);
+        }
+      } else {
+        // 如果文件没有打开，则在新面板中打开文件
+        commands.executeCommand('vscode.open', filePath, { viewColumn: ViewColumn.Beside });
+      }
+    }
     const messageHandlers: { [key: string]: (data?: any) => void } = {
       refresh: () => {
         update();
@@ -250,31 +277,24 @@ class MarkmapEditor implements CustomTextEditorProvider {
           );
         }
       },
-      openFile(relPath: string) {
-        const filePath = Utils.joinPath(Utils.dirname(document.uri), relPath);
-        if (jumpViewId) {
-          commands.executeCommand(
-            'vscode.openWith',
-            filePath,
-            jumpViewId
-          );
-          return;
-        }
-        const isOpen = vscodeWindow.visibleTextEditors.some(
-          editor => editor.document.uri.fsPath === filePath.fsPath
+      openFile,
+      location: async (lines: string) => {
+        let isOpen = vscodeWindow.visibleTextEditors.find(
+          editor => editor.document.uri.fsPath === document.uri.fsPath
         );
-        if (isOpen) {
-          // 如果文件已经打开，则聚焦到该文件
-          const existingEditor = vscodeWindow.visibleTextEditors.find(
-            editor => editor.document.uri.fsPath === filePath.fsPath
-          );
-          if (existingEditor) {
-            vscodeWindow.showTextDocument(existingEditor.document, existingEditor.viewColumn);
-          }
-        } else {
-          // 如果文件没有打开，则在新面板中打开文件
-          commands.executeCommand('vscode.open', filePath, { viewColumn: ViewColumn.Beside });
+        if (!isOpen) {
+          isOpen = await vscodeWindow.showTextDocument(document, {
+            viewColumn: ViewColumn.Beside,
+          });
         }
+
+        // commands.executeCommand('revealLine', { at: 'center',});
+        const lineNumbers = lines.split(',').map(Number);
+        // 创建一个新的 Range 对象，并跳转到该行
+        const range = new Range(lineNumbers[0], 0, lineNumbers[1], 0);
+        isOpen.revealRange(range, TextEditorRevealType.AtTop);
+        // 将光标移动到指定行
+        isOpen.selection = new Selection(range.start, range.end);
       },
     };
     const logger = vscodeWindow.createOutputChannel('Markmap');
