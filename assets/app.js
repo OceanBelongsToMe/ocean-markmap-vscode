@@ -45,7 +45,7 @@ document.addEventListener('click', e => {
           type: 'openFile',
           data: href,
         });
-	return;
+        return;
       }
     }
   }
@@ -62,19 +62,20 @@ document.addEventListener('click', e => {
 vscode.postMessage({ type: 'refresh' });
 
 const toolbar = new markmap.Toolbar();
-toolbar.register({
-  id: 'editAsText',
-  title: 'Edit as text',
-  content: createButton('Edit'),
-  onClick: clickHandler('editAsText'),
-});
+// toolbar.register({
+//   id: 'editAsText',
+//   title: 'Edit as text',
+//   content: createButton('Edit'),
+//   onClick: clickHandler('editAsText'),
+// });
 toolbar.register({
   id: 'exportAsHtml',
   title: 'Export as HTML',
   content: createButton('Export'),
   onClick: clickHandler('exportAsHtml'),
 });
-toolbar.setItems(['zoomIn', 'zoomOut', 'fit', 'recurse', 'editAsText', 'exportAsHtml']);
+// toolbar.setItems(['zoomIn', 'zoomOut', 'fit', 'recurse', 'editAsText', 'exportAsHtml']);
+toolbar.setItems(['zoomIn', 'zoomOut', 'fit', 'recurse', 'exportAsHtml']);
 setTimeout(() => {
   toolbar.attach(mm);
   document.body.append(toolbar.el);
