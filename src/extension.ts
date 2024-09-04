@@ -282,21 +282,27 @@ class MarkmapEditor implements CustomTextEditorProvider {
         let isOpen = vscodeWindow.visibleTextEditors.find(
           editor => editor.document.uri.fsPath === document.uri.fsPath
         );
+        let viewColumn: ViewColumn;
         if (!isOpen) {
-          isOpen = await vscodeWindow.showTextDocument(document, {
-            viewColumn: ViewColumn.Beside,
-          });
+          viewColumn = ViewColumn.Beside;
+        } else {
+          viewColumn = isOpen.viewColumn;
         }
+
+        isOpen = await vscodeWindow.showTextDocument(document, {
+          viewColumn,
+        });
 
         // commands.executeCommand('revealLine', { at: 'center',});
         const lineNumbers = lines.split(',').map(Number);
         // 创建一个新的 Range 对象，并跳转到该行
         const line = document.lineAt(lineNumbers[0]);
-        let range = line.range;
+        let range = line.range;;
         range = new Range(range.end, range.end);
         isOpen.revealRange(range, TextEditorRevealType.AtTop);
         // 将光标移动到指定行
         isOpen.selection = new Selection(range.start, range.end);
+
       },
     };
     const logger = vscodeWindow.createOutputChannel('Markmap');
