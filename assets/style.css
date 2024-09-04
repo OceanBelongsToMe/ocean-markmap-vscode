@@ -23,10 +23,42 @@ body {
   padding-left: 4px;
   padding-right: 4px;
 }
-
-node-container {
-  cursor: pointer;
-}
 .mm-toolbar-brand {
   display: none !important;
+}
+.node-container {
+  cursor: pointer;
+}
+.node-remark {
+  position: fixed;
+  top: 20; /* 根据需要调整位置 */
+  left: 0; /* 根据需要调整位置 */
+  z-index: 9999999; /* 使其浮动在最上层 */
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding: 5px; /* 添加一些内边距，让内容不贴边 */
+  white-space: nowrap; /* 如果你希望内容不换行，可以使用这个 */
+}
+/* See：https://github.com/primer/css/blob/v12.4.0/src/buttons/button.scss#L205 */
+details {
+  /* // Remove marker added by the display: list-item browser default */
+  > summary {
+    list-style: none;
+  }
+  /* Remove marker added by details polyfill */
+  > summary::before {
+    display: none;
+  }
+  /* Remove marker added by Chrome */
+  > summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+/*  custom style */
+summary:after {
+  content: '🙈';
+}
+details[open] summary:after {
+  content: '🐵';
 }

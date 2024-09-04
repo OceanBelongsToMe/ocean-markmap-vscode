@@ -5,22 +5,35 @@ import plantuml from 'markdown-it-plantuml';
 import type { StateCore } from "markdown-it/index.js";
 
 const eleTokenTag = "node-container";
+const remarkTokenTag = "node-remark";
 const customRuleName = 'customMdIt';
 const eleOpen = new Token(eleTokenTag, eleTokenTag, 1);
+eleOpen.attrSet('class', eleTokenTag);
 const eleClose = new Token(eleTokenTag, eleTokenTag, -1);
-
+const remarkOpen = new Token(remarkTokenTag, 'div', 1);
+const remarkClose = new Token(remarkTokenTag, 'div', -1);
 function customRuler(state: StateCore) {
     const renderer = new Renderer();
-
-    for (let i = 0; i < state.tokens.length; i += 1) {
-        const token = state.tokens[i];
+    let preHeadingIdx = 0;
+    const tokens = state.tokens;
+    for (let i = tokens.length - 1; i >= 0; i--) {
+        const token = tokens[i];
         if (token.map) {
             eleOpen.attrSet("data-lines", token.map.join(','));
         }
-        if (i >= 1 && token.type === 'inline' && token.content) {
-            const prev = state.tokens[i - 1];
+        if (token.type === 'heading_close' && preHeadingIdx >= 1 && (preHeadingIdx - 1) !== i) {
+            if (token.tag < tokens[preHeadingIdx].tag) {
+                // const inline = tokens[i - 1];
+                // remarkOpen.attrSet('class', remarkTokenTag);
+                // inline.content = `<details><summary>${inline.content}</summary>${renderer.renderToken([remarkOpen], 0, {})}ss森s法法师sss${renderer.renderToken([remarkClose], 0, {})}</details>`
+            }
+        }
+        if (token.type === 'heading_open') {
+            preHeadingIdx = i;
+        }
+        if (token.type === 'inline' && token.content) {
             if (i >= 2) {
-                const prevPrev = state.tokens[i - 2];
+                const prevPrev = tokens[i - 2];
                 if (prevPrev.type === 'list_item_open') {
                     if (prevPrev.info) {
                         token.content = `${prevPrev.info}${prevPrev.markup} ${token.content}`;
@@ -28,8 +41,12 @@ function customRuler(state: StateCore) {
                     token.content = `${renderer.renderToken([eleOpen], 0, {})}${token.content}${renderer.renderToken([eleClose], 0, {})}`;
                 }
             }
-            if (prev.type === 'heading_open') {
-                token.content = `${renderer.renderToken([eleOpen], 0, {})}${token.content}${renderer.renderToken([eleClose], 0, {})}`;
+
+            if (i >= 1) {
+                const prev = tokens[i - 1];
+                if (prev.type === 'heading_open') {
+                    token.content = `${renderer.renderToken([eleOpen], 0, {})}${token.content}${renderer.renderToken([eleClose], 0, {})}`;
+                }
             }
         }
     }
