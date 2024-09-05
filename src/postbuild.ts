@@ -28,7 +28,7 @@ async function fetchAssets() {
   ]
     .filter((url) => url.startsWith(ASSETS_PREFIX))
     .map((url) => url.slice(ASSETS_PREFIX.length));
-  const fastest = await transformer.urlBuilder.getFastestProvider();
+  const fastest = await transformer.urlBuilder.getFastestProvider(5000);
   await Promise.all(
     paths.map((path) =>
       downloadAsset(

@@ -282,7 +282,12 @@ class MarkmapEditor implements CustomTextEditorProvider {
         let isOpen = vscodeWindow.visibleTextEditors.find(
           editor => editor.document.uri.fsPath === document.uri.fsPath
         );
+
         let viewColumn: ViewColumn;
+        // if (vscodeWindow.visibleTextEditors.length >= 2) {
+        //   await commands.executeCommand('workbench.action.splitEditorRight');
+        //   viewColumn = vscodeWindow.visibleTextEditors[vscodeWindow.visibleTextEditors.length - 1].viewColumn;
+        // } else
         if (!isOpen) {
           viewColumn = ViewColumn.Beside;
         } else {
@@ -292,8 +297,6 @@ class MarkmapEditor implements CustomTextEditorProvider {
         isOpen = await vscodeWindow.showTextDocument(document, {
           viewColumn,
         });
-
-        // commands.executeCommand('revealLine', { at: 'center',});
         const lineNumbers = lines.split(',').map(Number);
         // 创建一个新的 Range 对象，并跳转到该行
         const line = document.lineAt(lineNumbers[0]);
@@ -340,7 +343,7 @@ export function activate(context: ExtensionContext) {
         'vscode.openWith',
         uri,
         VIEW_TYPE,
-        ViewColumn.Beside,
+        vscodeWindow.activeTextEditor?.viewColumn,
       );
     }),
   );
