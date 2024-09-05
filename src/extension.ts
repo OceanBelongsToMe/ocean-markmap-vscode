@@ -285,11 +285,13 @@ class MarkmapEditor implements CustomTextEditorProvider {
 
         let viewColumn: ViewColumn;
         const all = vscodeWindow.tabGroups.all;
+        let closeOthers = false;
 
         if (isOpen) {
           viewColumn = isOpen.viewColumn;
         } else if (all.length >= 2) {
           await commands.executeCommand('workbench.action.splitEditorToRightGroup');
+          closeOthers = true;
           viewColumn = vscodeWindow.tabGroups.activeTabGroup.viewColumn;
         } else {
           viewColumn = ViewColumn.Beside;
@@ -306,7 +308,9 @@ class MarkmapEditor implements CustomTextEditorProvider {
         isOpen.revealRange(range, TextEditorRevealType.AtTop);
         // 将光标移动到指定行
         isOpen.selection = new Selection(range.start, range.end);
-
+        if (closeOthers) {
+          await commands.executeCommand('workbench.action.closeOtherEditors');
+        }
       },
     };
     const logger = vscodeWindow.createOutputChannel('Markmap');
