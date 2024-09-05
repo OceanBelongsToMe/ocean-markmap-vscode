@@ -284,14 +284,15 @@ class MarkmapEditor implements CustomTextEditorProvider {
         );
 
         let viewColumn: ViewColumn;
-        // if (vscodeWindow.visibleTextEditors.length >= 2) {
-        //   await commands.executeCommand('workbench.action.splitEditorRight');
-        //   viewColumn = vscodeWindow.visibleTextEditors[vscodeWindow.visibleTextEditors.length - 1].viewColumn;
-        // } else
-        if (!isOpen) {
-          viewColumn = ViewColumn.Beside;
-        } else {
+        const all = vscodeWindow.tabGroups.all;
+
+        if (isOpen) {
           viewColumn = isOpen.viewColumn;
+        } else if (all.length >= 2) {
+          await commands.executeCommand('workbench.action.splitEditorToRightGroup');
+          viewColumn = vscodeWindow.tabGroups.activeTabGroup.viewColumn;
+        } else {
+          viewColumn = ViewColumn.Beside;
         }
 
         isOpen = await vscodeWindow.showTextDocument(document, {
