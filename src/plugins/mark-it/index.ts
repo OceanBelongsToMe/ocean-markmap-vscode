@@ -61,18 +61,14 @@ const customMdItPlugin: MarkdownIt.PluginSimple = (md: MarkdownIt) => {
     md.block.ruler.before('table', customRuleName, (state, a, b, c) => {
         return false;
     });
-    const maths = ['math_block', 'math_inline'];
-    [...maths, 'fence', 'image', 'blockquote', customRuleName, 'uml_diagram'].forEach((key) => {
+    ['fence', 'image', 'blockquote', customRuleName, 'uml_diagram'].forEach((key) => {
         const defaultRenderer = md.renderer.rules[key] || proxy;
         md.renderer.rules[key] = function (tokens, idx, options, env, self) {
             const token = tokens[idx];
             if (token.map) {
                 eleOpen.attrSet("data-lines", token.map.join(','));
             }
-            let result = defaultRenderer(tokens, idx, options, env, self);
-            if (maths.includes(key)) {
-                result = result.replace(/position: relative;/g, '');
-            }
+            const result = defaultRenderer(tokens, idx, options, env, self);
             return `${renderer.renderToken([eleOpen], 0, options)}${result}${renderer.renderToken([eleClose], 0, options)}`;
         };
     });
