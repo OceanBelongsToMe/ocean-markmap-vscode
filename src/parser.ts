@@ -40,13 +40,7 @@ const customizeSelectorRules: IHtmlParserSelectorRules = {
         return {
             ...getContent($node),
         };
-    },
-    'blockquote': ({ $node, getContent }) => {
-        return {
-            ...getContent($node.contents()),
-        };
-    },
-
+    }
 };
 for (const key in customizeSelectorRules) {
     const custFn = customizeSelectorRules[key];
@@ -57,6 +51,6 @@ for (const key in customizeSelectorRules) {
 }
 
 export const customizeOptions: IHtmlParserOptions = {
-    selector: `${defaultOptions.selector},blockquote,node-container`,
+    selector: `${defaultOptions.selector},node-container`,
     selectorRules: customizeSelectorRules,
 };
