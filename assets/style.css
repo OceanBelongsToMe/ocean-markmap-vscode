@@ -31,9 +31,9 @@ body {
 }
 .node-remark {
   position: fixed;
-  top: 20; /* 根据需要调整位置 */
-  left: 0; /* 根据需要调整位置 */
-  z-index: 9999999; /* 使其浮动在最上层 */
+  top: 20px; /* 根据需要调整位置 */
+  left: 0px; /* 根据需要调整位置 */
+  z-index: 9999; /* 使其浮动在最上层 */
   background-color: #eee;
   border: 1px solid #ccc;
   padding: 5px; /* 添加一些内边距，让内容不贴边 */

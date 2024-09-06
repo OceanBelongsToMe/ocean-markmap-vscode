@@ -23,9 +23,9 @@ function customRuler(state: StateCore) {
         }
         if (token.type === 'heading_close' && preHeadingIdx >= 1 && (preHeadingIdx - 1) !== i) {
             if (token.tag < tokens[preHeadingIdx].tag) {
-                const inline = tokens[i - 1];
-                remarkOpen.attrSet('class', remarkTokenTag);
-                inline.content = `<details><summary>${inline.content}</summary>${renderer.renderToken([remarkOpen], 0, {})}ss森s法法师sss${renderer.renderToken([remarkClose], 0, {})}</details>`
+                // const inline = tokens[i - 1];
+                // remarkOpen.attrSet('class', remarkTokenTag);
+                // inline.content = `<details><summary>${inline.content}</summary>${renderer.renderToken([remarkOpen], 0, {})}ss森s法法师sss${renderer.renderToken([remarkClose], 0, {})}</details>`
             }
         }
         if (token.type === 'heading_open') {
