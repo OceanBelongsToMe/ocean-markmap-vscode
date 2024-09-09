@@ -295,7 +295,7 @@ class MarkmapEditor implements CustomTextEditorProvider {
         } else if (all.length >= 2) {
           await commands.executeCommand(splitCommand || 'workbench.action.splitEditorToLastGroup');
           closeOthers = true;
-          viewColumn = all[all.length - 1].viewColumn;
+          viewColumn = vscodeWindow.tabGroups.activeTabGroup.viewColumn;
         } else {
           viewColumn = ViewColumn.Beside;
         }
