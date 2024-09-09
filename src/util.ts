@@ -30,7 +30,7 @@ transformerLocal.urlBuilder.provider = local;
 
 export const transformerExport = new Transformer(customPlugins);
 let bestProvider = transformerExport.urlBuilder.provider;
-transformerExport.urlBuilder.getFastestProvider().then((provider) => {
+transformerExport.urlBuilder.getFastestProvider(5000).then((provider) => {
   bestProvider = provider;
 });
 

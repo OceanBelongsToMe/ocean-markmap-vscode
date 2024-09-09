@@ -108,6 +108,9 @@ class MarkmapEditor implements CustomTextEditorProvider {
     const jumpViewId = workspace
       .getConfiguration('markmap')
       .get<string>('jumpViewId');
+    const splitCommand = workspace
+      .getConfiguration('markmap')
+      .get<string>('split');
     const updateOptions = () => {
       const raw = workspace
         .getConfiguration('markmap')
@@ -290,9 +293,9 @@ class MarkmapEditor implements CustomTextEditorProvider {
         if (isOpen) {
           viewColumn = isOpen.viewColumn;
         } else if (all.length >= 2) {
-          await commands.executeCommand('workbench.action.splitEditorToRightGroup');
+          await commands.executeCommand(splitCommand || 'workbench.action.splitEditorToLastGroup');
           closeOthers = true;
-          viewColumn = vscodeWindow.tabGroups.activeTabGroup.viewColumn;
+          viewColumn = all[all.length - 1].viewColumn;
         } else {
           viewColumn = ViewColumn.Beside;
         }
