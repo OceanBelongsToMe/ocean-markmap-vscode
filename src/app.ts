@@ -132,7 +132,7 @@ function initialize(mm: Markmap) {
       })
       .on(
         'dblclick.focus',
-        (e, d) => {
+        (e: any, d: { payload: { lines: string } }) => {
           const lines = d.payload?.lines as string | undefined;
           const line = +lines?.split(',')[0];
           if (!isNaN(line))

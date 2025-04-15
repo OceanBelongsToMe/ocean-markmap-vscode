@@ -322,7 +322,7 @@ class MarkmapEditor implements CustomTextEditorProvider {
         commands.executeCommand('vscode.open', filePath);
       },
       async setFocus(line: number) {
-        const viewColumn = vscodeWindow.tabGroups.all
+        let viewColumn = vscodeWindow.tabGroups.all
           .flatMap((group) => group.tabs)
           .find(
             (tab) =>
@@ -330,10 +330,14 @@ class MarkmapEditor implements CustomTextEditorProvider {
               tab.group &&
               tab.input.uri.toString() === document.uri.toString(),
           )?.group.viewColumn;
+        if (!viewColumn) {
+          viewColumn = ViewColumn.Beside;
+        }
         const editor = await vscodeWindow.showTextDocument(document, {
           viewColumn,
         });
-        const pos = new Position(line, 0);
+        const lineText = document.lineAt(line).text;
+        const pos = new Position(line, lineText.length);
         editor.selection = new Selection(pos, pos);
         editor.revealRange(editor.selection);
       },
@@ -390,7 +394,7 @@ export function activate(context: ExtensionContext) {
         'vscode.openWith',
         uri,
         VIEW_TYPE,
-        ViewColumn.Beside,
+        ViewColumn.Two,
       );
     }),
     commands.registerCommand(`${PREFIX}.toggle`, () => {
