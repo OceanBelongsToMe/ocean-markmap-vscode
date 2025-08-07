@@ -1,8 +1,8 @@
 {
   "name": "markmap-vscode",
-  "version": "0.2.12",
+  "version": "0.2.11",
   "description": "Visualize your markdown in VSCode",
-  "author": "Gerald <gera2ld@live.com>",
+  "author": "Ocean <oceanwangyang@163.com>",
   "license": "MIT",
   "displayName": "Markmap",
   "publisher": "gera2ld",
